@@ -8,17 +8,14 @@ game_grid = [
 x_squares = []
 o_squares = []
 
-# set first current player
 current_player = 'X'
-
 is_game_ended = False
 
-# def print_grid():
-#   # iterate through game_grid to print latest game grid
-#   for row in game_grid:
-#     for square in row:
-#       print(square, end=',')
-#     print()
+def print_grid():
+  for row in game_grid:
+    for square in row:
+      print(square, end=',')
+    print()
 
 # get and check player input
 def get_player_input():
@@ -43,9 +40,13 @@ def get_player_input():
     if match == False:
       print("Please pick a valid square.")
 
+  # update player turn
+  if globals()["current_player"] == 'X':
+    globals()["current_player"] = 'O'
+  else:
+    globals()["current_player"] = 'X'
+
 def is_win():
-  # win: vertical, horizontal, or diagonal line is complete
-  # define win conditions
   win_conditions = [
     ['1', '2', '3'],
     ['4', '5', '6'],
@@ -56,58 +57,44 @@ def is_win():
     ['1', '5', '9'],
     ['3', '5', '7']
   ]
-  # check storage lists for winning combination
-  # does x_squares contain all 3 numbers in one of the winning conditions?
-  # does o_squares contain all 3 numbers in one of the winning conditions?
-  # set1 would be x_squares, iterate through winning combos, then sort and check for equality
+
+  # check and compare intersections of storage list and win conditions
   for win_condition in win_conditions:
     x_intsct = set(globals()["x_squares"]).intersection(win_condition)
     list_x_intsct = list(x_intsct)
     list_x_intsct.sort()
     if list_x_intsct == win_condition:
-      print("X wins!")
+      print("\nX wins!\n")
       exit()
   for win_condition in win_conditions:
     o_intsct = set(globals()["o_squares"]).intersection(win_condition)
     list_o_intsct = list(o_intsct)
     list_o_intsct.sort()
     if list_o_intsct == win_condition:
-      print("O wins!")
+      print("\nO wins!\n")
       exit()
 
 def is_draw():
-  # draw: no available squares left
   occupied_squares = 0
+
+  # count occupied squares
   for i in range(len(game_grid)):
     for j in range(len(game_grid[i])):
       if game_grid[i][j] == 'X' or game_grid[i][j] == 'O':
         occupied_squares += 1
   if occupied_squares == 9:
     print("Grab a sketch pad, because it's a draw...")
-    globals()["is_game_ended"] = True
     exit()
 
 def game_loop():
 
-  while globals()["is_game_ended"] == False:
-    # print game_grid
-    # print_grid()
-    # iterate through game_grid to print latest game grid
-    for row in game_grid:
-      for square in row:
-        print(square, end=',')
-      print()
+  while is_game_ended == False:
+    print_grid()
 
     is_win()
     is_draw()
 
     get_player_input()
     print('\n')
-
-    # update player turn
-    if globals()["current_player"] == 'X':
-      globals()["current_player"] = 'O'
-    else:
-      globals()["current_player"] = 'X'
 
 game_loop()
