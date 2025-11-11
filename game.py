@@ -10,6 +10,7 @@ game_grid = [ ['1', '2', '3'], ['4', '5', '6'], ['7', '8', '9']]
 
 # set first current player
 current_player = 'X'
+is_game_ended = False
 
 # get and check player input
 def get_player_input():
@@ -26,10 +27,23 @@ def get_player_input():
     if match == False:
       print("Please pick a valid square.")
 
-def game_loop():
-  test_loops = 0
+def is_win_draw():
+  # draw: no available squares left
+  occupied_squares = 0
+  for i in range(len(game_grid)):
+    for j in range(len(game_grid[i])):
+      if game_grid[i][j] == 'X' or game_grid[i][j] == 'O':
+        occupied_squares += 1
+  if occupied_squares == 9:
+    print("Grab a sketch pad, because it's a draw...")
+    globals()["is_game_ended"] = True
+    exit()
+  # win: vertical, horizontal, or diagonal line is complete
 
-  while test_loops <= 5:
+def game_loop():
+  # test_loops = 0
+
+  while globals()["is_game_ended"] == False:
     # print game_grid
     # print_grid()
     # iterate through game_grid to print latest game grid
@@ -38,18 +52,17 @@ def game_loop():
         print(square, end=',')
       print()
     # TODO: check win or draw condition to end game loop
-    # ask for player input
-    # player inputs number for open square
+    is_win_draw()
 
     get_player_input()
-
     print('\n')
-    # change current_player
+
+    # update player turn
     if globals()["current_player"] == 'X':
       globals()["current_player"] = 'O'
     else:
       globals()["current_player"] = 'X'
-    test_loops += 1
+    # test_loops += 1
 
 game_loop()
 # upon win or draw, display message
