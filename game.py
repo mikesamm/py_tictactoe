@@ -59,6 +59,21 @@ def is_win():
   # check storage lists for winning combination
   # does x_squares contain all 3 numbers in one of the winning conditions?
   # does o_squares contain all 3 numbers in one of the winning conditions?
+  # set1 would be x_squares, iterate through winning combos, then sort and check for equality
+  for win_condition in win_conditions:
+    x_intsct = set(globals()["x_squares"]).intersection(win_condition)
+    list_x_intsct = list(x_intsct)
+    list_x_intsct.sort()
+    if list_x_intsct == win_condition:
+      print("X wins!")
+      exit()
+  for win_condition in win_conditions:
+    o_intsct = set(globals()["o_squares"]).intersection(win_condition)
+    list_o_intsct = list(o_intsct)
+    list_o_intsct.sort()
+    if list_o_intsct == win_condition:
+      print("O wins!")
+      exit()
 
 def is_draw():
   # draw: no available squares left
